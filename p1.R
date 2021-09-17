@@ -1,8 +1,57 @@
+# installing all the packages
 install.packages("igraph")
 library(igraph)
+install.packages("plyr")
+library(plyr)
+install.packages("sna")
+library(sna)
+install.packages("CINNA")
+library(CINNA)
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("reshape2")
+library(reshape2)
 
-g <- read.table("./dataset.txt")
+# read the dataset and assign it to g
+g <- read.table("./dataset.txt", header = FALSE, sep='\t')
+# create a new data frame h based on h
 h <- graph.data.frame(g)
-plot(h)
+#plot(h)
+# plot h
 plot.igraph(h)
-plot.igraph(h, vertex.name = V(h)$FromNodeId)
+#plot.igraph(h, vertex.name = V(h)$V1)
+#hist(g$V1)
+#sum(is.na(g))
+
+# convert g to matrix
+matrix <- as.matrix(g[,1:2, drop=FALSE])
+
+# use simplify function on h
+is_simple(h)
+simplify(h)
+degree(h)
+
+# find degree centrality
+matrix_g <- graph.edgelist(as.matrix(g[,1:2, drop=FALSE]), directed=FALSE)
+matrix_g <- simplify(matrix_g)
+
+
+# closeness centrality
+igraph::centr_clo(h) # centralization: 0.1661062, theoretical max: 26473
+
+# betweenness centrality
+igraph::centr_betw(h) # centralization: 0.1536933, theoretical max: 1.85542e+13
+#h_net
+#V(h)$degree<-degree(h)
+#plot(h,vertex.label.cex = .6, vertex.label.color = "black", vertex.size = V(h)$degree, vertex.label.cex = .2)
+
+# determine longest paths 
+farthest_vertices(h, directed=FALSE) # $vertices
+# + 2/26475 vertices, named, from 9705623:
+# [1] 23601 3010, distance: 17
+
+# get diameter
+diameter(h, directed=FALSE) # 17
+
+# find largest cliques
+h.lgcliques=igraph::clique_num(matrix_g) # 16
