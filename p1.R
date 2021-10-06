@@ -15,13 +15,22 @@ plot.igraph(h)
 
 # simplify h by plotting from the range 1:100
 simplified_h <- subgraph.edges(h, 1:100)
-plot.igraph(simplified_h, edge.label = E(simplified_h)$V3)
+plot.igraph(simplified_h, edge.label = E(simplified_h)$V3, edge.label.color ="red")
 
-# convert g to matrix
-# matrix <- as.matrix(g[,1:2, drop=FALSE])
-# 
-# matrix_h <- as.matrix(h, matrix.type = c("adjacency"))
-# edgelist_h <- as_edgelist(h)
+## (3) Graph Analytics Functions
+
+# String function
+str(simplified_h)
+
+# Get adjacency matrix
+simplified_h.adj <- igraph::get.adjacency(simplified_h)
+simplified_h.adj
+
+# Find edge density
+igraph::edge_density(simplified_h)
+
+# Histogram of the degree of nodes
+hist(igraph::degree(simplified_h))
 
 ## (4) additional igraph functions ##
 
@@ -57,7 +66,7 @@ coreness(simplified_h)
 
 # permute function: create a new graph by permuting vertex ids
 hh<-permute(simplified_h, sample(vcount(simplified_h)))
-plot.igraph(hh)
+plot.igraph(hh, edge.label = E(simplified_h)$V3, edge.label.color ="green")
 
 ## (5) ##
 
